@@ -2,7 +2,8 @@
  * App configuration and TMDB API settings.
  * Set EXPO_PUBLIC_TMDB_API_KEY in .env or here for development.
  */
-const TMDB_API_KEY = process.env.EXPO_PUBLIC_TMDB_API_KEY ?? "123456abcdefg";
+const TMDB_API_KEY =
+  process.env.EXPO_PUBLIC_TMDB_API_KEY ?? "7bb776f6a7170fdbbe77dbaaeaee2de6";
 const TMDB_BASE_URL = "https://api.themoviedb.org/3";
 const TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p";
 

@@ -1,13 +1,13 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import type { WatchStackParamList } from "./types";
-import { MovieListScreen } from "../screens/MovieListScreen";
-import { MovieDetailScreen } from "../screens/MovieDetailScreen";
-import { TrailerScreen } from "../screens/TrailerScreen";
-import { SearchScreen } from "../screens/SearchScreen";
-import { SearchResultsScreen } from "../screens/SearchResultsScreen";
-import { ShowtimeSelectionScreen } from "../screens/ShowtimeSelectionScreen";
-// import { SeatMapScreen } from '../screens/SeatMapScreen';
+import { MovieListScreen } from "../screens/movieListScreen/ui/MovieListScreen";
+import { MovieDetailScreen } from "../screens/movieDetailScreen/ui/MovieDetailScreen";
+import TrailerScreen from "../screens/trailerScreeen/ui/TrailerScreen";
+import { SearchScreen } from "../screens/searchScreen/ui/SearchScreen";
+import { SearchResultsScreen } from "../screens/searchResultsScreen/ui/SearchResultsScreen";
+import ShowtimeSelectionScreen from "../screens/showTimeSelectionScreen/ui/ShowtimeSelectionScreen";
+import { SeatMapScreen } from "../screens/seatMapScreen/ui/SeatMapScreen";
 
 const Stack = createNativeStackNavigator<WatchStackParamList>();
 
@@ -32,7 +32,7 @@ export function WatchStack() {
         name="ShowtimeSelection"
         component={ShowtimeSelectionScreen}
       />
-      {/* <Stack.Screen name="SeatMap" component={SeatMapScreen} /> */}
+      <Stack.Screen name="SeatMap" component={SeatMapScreen} />
     </Stack.Navigator>
   );
 }

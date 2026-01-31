@@ -1,5 +1,5 @@
 /**
- * App-wide theme: colors, spacing, typography.
+ * App-wide theme: colors, spacing, typography, fonts.
  */
 export const colors = {
   background: '#F5F5F5',
@@ -9,9 +9,11 @@ export const colors = {
   text: '#1A1A1A',
   textSecondary: '#6B6B6B',
   border: '#E0E0E0',
-  tabBar: '#2C2C2E',
+  tabBar: '#2D2D44',
+  tabBarBorder: '#6B9BD1',
   tabBarActive: '#FFFFFF',
-  tabBarInactive: '#8E8E93',
+  tabBarActiveBg: '#FFFFFF',
+  tabBarInactive: '#9E9EAD',
   seat: {
     regular: '#4A90E2',
     vip: '#9B59B6',
@@ -36,9 +38,18 @@ export const borderRadius = {
   pill: 999,
 } as const;
 
+/** Poppins font family names (loaded in App.tsx). */
+export const fonts = {
+  light: 'Poppins-Light',
+  regular: 'Poppins-Regular',
+  medium: 'Poppins-Medium',
+  semiBold: 'Poppins-SemiBold',
+  bold: 'Poppins-Bold',
+} as const;
+
 export const typography = {
-  title: { fontSize: 20, fontWeight: '700' as const },
-  subtitle: { fontSize: 14, fontWeight: '500' as const },
-  body: { fontSize: 16, fontWeight: '400' as const },
-  caption: { fontSize: 12, fontWeight: '400' as const },
+  title: { fontSize: 20, fontFamily: fonts.bold },
+  subtitle: { fontSize: 14, fontFamily: fonts.medium },
+  body: { fontSize: 16, fontFamily: fonts.regular },
+  caption: { fontSize: 12, fontFamily: fonts.regular },
 } as const;
