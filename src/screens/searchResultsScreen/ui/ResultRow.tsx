@@ -51,8 +51,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
   },
   rowPoster: {
-    width: 56,
-    height: 84,
+    width: 130,
+    height: 100,
     borderRadius: borderRadius.sm,
     backgroundColor: colors.border,
   },

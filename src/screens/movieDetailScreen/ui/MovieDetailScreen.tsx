@@ -4,12 +4,11 @@ import {
   StyleSheet,
   ScrollView,
   ActivityIndicator,
-  useWindowDimensions,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation, useRoute, useFocusEffect } from "@react-navigation/native";
-import type { TMDBMovieDetail } from "../../../types/api";
-import { fetchMovieDetail, fetchMovieVideos } from "../../../api/tmdb";
+import type { TMDBMovieDetail, TMDBImagesResponse } from "../../../types/api";
+import { fetchMovieDetail, fetchMovieVideos, fetchMovieImages } from "../../../api/tmdb";
 import { getBackdropUrl } from "../../../constants/config";
 import { colors, spacing } from "../../../constants/theme";
 import { Nav, Route } from "../utils/types";
@@ -19,17 +18,18 @@ import {
   createOpenTrailer,
   createOpenShowtime,
 } from "../utils/callbacks";
-import { MovieDetailHeader } from "./MovieDetailHeader";
-import { MovieDetailBackdrop } from "./MovieDetailBackdrop";
+import { MovieDetailHero } from "./MovieDetailHero";
+import { MovieDetailGenres } from "./MovieDetailGenres";
+import { MovieDetailImages } from "./MovieDetailImages";
 import { MovieDetailBody } from "./MovieDetailBody";
 
 export function MovieDetailScreen() {
   const navigation = useNavigation<Nav>();
   const route = useRoute<Route>();
   const { movie: initialMovie } = route.params;
-  const { width } = useWindowDimensions();
   const [detail, setDetail] = useState<TMDBMovieDetail | null>(null);
   const [trailer, setTrailer] = useState<ReturnType<typeof getTrailerFromVideos>>(null);
+  const [images, setImages] = useState<TMDBImagesResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -40,13 +40,15 @@ export function MovieDetailScreen() {
         setLoading(true);
         setError(null);
         try {
-          const [movieRes, videosRes] = await Promise.all([
+          const [movieRes, videosRes, imagesRes] = await Promise.all([
             fetchMovieDetail(initialMovie.id),
             fetchMovieVideos(initialMovie.id),
+            fetchMovieImages(initialMovie.id),
           ]);
           if (!cancelled) {
             setDetail(movieRes);
             setTrailer(getTrailerFromVideos(videosRes.results));
+            setImages(imagesRes);
           }
         } catch (e) {
           if (!cancelled)
@@ -84,6 +86,7 @@ export function MovieDetailScreen() {
   }
 
   const movie = detail ?? initialMovie;
+  const genres = "genres" in movie && movie.genres ? movie.genres : [];
   const backdropUrl = getBackdropUrl(movie.backdrop_path);
   const releaseDate =
     "release_date" in movie && movie.release_date
@@ -96,22 +99,29 @@ export function MovieDetailScreen() {
   const overview = "overview" in movie ? movie.overview : null;
 
   return (
-    <SafeAreaView style={styles.container} edges={["top", "bottom"]}>
-      <MovieDetailHeader onGoBack={goBack} title={movie.title} />
+    <SafeAreaView style={styles.container} edges={["bottom"]}>
       <ScrollView
         style={styles.scroll}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        <MovieDetailBackdrop uri={backdropUrl} width={width} />
-        <MovieDetailBody
+        <MovieDetailHero
+          backdropUri={backdropUrl}
           title={movie.title}
           releaseDate={releaseDate}
-          overview={overview ?? null}
-          error={error}
           hasTrailer={!!trailer}
+          onGoBack={goBack}
           onWatchTrailer={openTrailer}
           onGetTickets={openShowtime}
+        />
+        <MovieDetailGenres genres={genres} />
+        <MovieDetailImages
+          posters={images?.posters ?? []}
+          backdrops={images?.backdrops ?? []}
+        />
+        <MovieDetailBody
+          overview={overview ?? null}
+          error={error}
         />
       </ScrollView>
     </SafeAreaView>
